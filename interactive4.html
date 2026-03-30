@@ -1,0 +1,259 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI Mascot | Aesthetic Edition</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500&family=Syne:wght@400;600;800&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg: #050505;
+            --text-main: #f0f0f0;
+            --text-muted: #666666;
+            --accent: #ffffff;
+            --border: rgba(255, 255, 255, 0.1);
+        }
+
+        * {
+            margin: 0; padding: 0; box-sizing: border-box; cursor: none;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: var(--bg); color: var(--text-main);
+            overflow-x: hidden; scroll-behavior: smooth;
+        }
+
+        /* --- Custom Cursor --- */
+        .cursor-dot, .cursor-outline {
+            position: fixed; top: 0; left: 0; transform: translate(-50%, -50%);
+            border-radius: 50%; z-index: 9999; pointer-events: none;
+        }
+        .cursor-dot { width: 8px; height: 8px; background-color: var(--accent); }
+        .cursor-outline {
+            width: 40px; height: 40px; border: 1px solid rgba(255, 255, 255, 0.5);
+            transition: width 0.2s, height 0.2s, background-color 0.2s;
+        }
+
+        /* --- Navigation --- */
+        nav {
+            position: fixed; top: 0; width: 100%; padding: 2rem 4rem;
+            display: flex; justify-content: space-between; align-items: center;
+            z-index: 100; mix-blend-mode: difference;
+        }
+        .logo { font-family: 'Syne', sans-serif; font-weight: 800; font-size: 1.5rem; letter-spacing: -1px; }
+        .nav-links { display: flex; gap: 3rem; font-size: 0.85rem; text-transform: uppercase; letter-spacing: 1px; }
+        .nav-links a { color: var(--text-main); text-decoration: none; }
+
+        /* --- Layout & Typography --- */
+        .section {
+            min-height: 100vh; padding: 8rem 4rem; display: flex;
+            flex-direction: column; justify-content: center; position: relative;
+        }
+        .container { max-width: 1200px; margin: 0 auto; width: 100%; }
+        
+        h1, h2, h3 { font-family: 'Syne', sans-serif; font-weight: 800; }
+        h1 { font-size: clamp(4rem, 10vw, 10rem); line-height: 0.9; letter-spacing: -0.04em; text-transform: uppercase; }
+        h2 { font-size: clamp(3rem, 6vw, 6rem); line-height: 1; margin-bottom: 2rem; }
+        p.lead { font-size: 1.2rem; color: var(--text-muted); max-width: 500px; line-height: 1.6; margin-top: 2rem; }
+
+        /* --- Sirnik-Style Team Section --- */
+        .team-intro { display: flex; justify-content: space-between; align-items: flex-end; border-bottom: 1px solid var(--border); padding-bottom: 3rem; margin-bottom: 2rem; }
+        .team-intro-text { max-width: 400px; font-size: 1.1rem; color: var(--text-muted); line-height: 1.6; }
+        
+        .team-list { display: flex; flex-direction: column; }
+        .team-row {
+            display: grid;
+            grid-template-columns: 2fr 1fr 1fr;
+            align-items: center;
+            padding: 3rem 0;
+            border-bottom: 1px solid var(--border);
+            text-transform: uppercase;
+            transition: color 0.3s ease;
+        }
+        .team-row h3 { font-size: clamp(1.5rem, 3vw, 3rem); font-weight: 600; pointer-events: none; }
+        .team-row span { font-size: 1rem; color: var(--text-muted); font-family: 'Inter', sans-serif; pointer-events: none; transition: color 0.3s ease; }
+        
+        .team-row:hover { color: var(--text-main); }
+        .team-row:hover span { color: var(--text-main); }
+
+        /* Hover Image */
+        .team-hover-img {
+            position: fixed; top: 0; left: 0; width: 350px; height: 450px;
+            background-size: cover; background-position: center; pointer-events: none;
+            opacity: 0; transform: translate(-50%, -50%) scale(0.8);
+            transition: opacity 0.4s ease, transform 0.4s ease;
+            z-index: 50; filter: grayscale(100%);
+        }
+        .team-hover-img.visible { opacity: 1; transform: translate(-50%, -50%) scale(1); }
+
+        /* --- Massive Download Button --- */
+        .download-wrapper { text-align: center; margin-top: 4rem; }
+        .massive-btn {
+            font-family: 'Syne', sans-serif;
+            font-size: clamp(2rem, 5vw, 4.5rem);
+            font-weight: 800; text-transform: uppercase;
+            color: var(--bg); background: var(--text-main);
+            padding: 2rem 5rem; border-radius: 100px;
+            text-decoration: none; display: inline-block;
+            transition: all 0.4s ease; border: 1px solid var(--text-main);
+        }
+        .massive-btn:hover {
+            background: transparent; color: var(--text-main);
+            transform: scale(0.98);
+        }
+
+        /* --- Interactive Mascot --- */
+        .mascot-wrapper {
+            position: fixed; bottom: 50px; right: 50px; width: 80px; height: 80px; z-index: 900; pointer-events: none;
+        }
+        .mascot {
+            width: 100%; height: 100%; background: rgba(255, 255, 255, 0.9);
+            border-radius: 50%; box-shadow: 0 0 50px rgba(255,255,255,0.2);
+            display: flex; justify-content: center; align-items: center; gap: 8px;
+            animation: float 5s ease-in-out infinite;
+        }
+        .eye { width: 16px; height: 16px; background: #000; border-radius: 50%; position: relative; }
+        .pupil { width: 6px; height: 6px; background: #fff; border-radius: 50%; position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); transition: 0.1s; }
+        
+        @keyframes float { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-20px); } }
+
+        /* --- Scroll Animations --- */
+        .fade-up { opacity: 0; transform: translateY(50px); transition: opacity 1s ease, transform 1s ease; }
+        .fade-up.visible { opacity: 1; transform: translateY(0); }
+
+        /* Footer */
+        footer { padding: 4rem; border-top: 1px solid var(--border); display: flex; justify-content: space-between; font-size: 0.8rem; text-transform: uppercase; color: var(--text-muted); }
+
+        /* Mobile Adjustments */
+        @media (max-width: 768px) {
+            .team-row { grid-template-columns: 1fr; gap: 1rem; padding: 2rem 0; }
+            .team-intro { flex-direction: column; align-items: flex-start; gap: 2rem; }
+            .nav-links { display: none; }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="cursor-dot"></div>
+    <div class="cursor-outline"></div>
+    <div class="team-hover-img"></div>
+
+    <nav>
+        <div class="logo">MASCOT // OS</div>
+        <div class="nav-links">
+            <a href="#vision">Vision</a>
+            <a href="#creators">Creators</a>
+            <a href="#download">Download</a>
+        </div>
+    </nav>
+
+    <div class="mascot-wrapper">
+        <div class="mascot">
+            <div class="eye"><div class="pupil"></div></div>
+            <div class="eye"><div class="pupil"></div></div>
+        </div>
+    </div>
+
+    <section class="section" id="vision">
+        <div class="container fade-up">
+            <h2>Digital<br>Consciousness</h2>
+            <p class="lead">We didn't just build a desktop pet. We built an unobtrusive, context-aware companion that breathes life into your operating system.</p>
+        </div>
+    </section>
+
+    <section id="creators" class="section">
+        <div class="container fade-up">
+            <div class="team-intro">
+                <h2>Team made<br>visible.</h2>
+                <div class="team-intro-text">
+                    Structure, rhythm, and emotion — expressed through clarity and control. Observe how ideas take form and thinking becomes interface.
+                </div>
+            </div>
+            
+            <div class="team-list">
+                <div class="team-row" data-img="mayura.png">
+                    <h3>Mayura</h3>
+                    <span>banglore, India</span>
+                    <span>Lead AI Engineer</span>
+                </div>
+                <div class="team-row" data-img="chinmay.png">
+                    <h3>Chinmay</h3>
+                    <span>Banglore, India</span>
+                    <span>Interaction Design</span>
+                </div>
+                <div class="team-row" data-img="Kushal.png">
+                    <H3>Kushal</H3>
+                    <span>Kollegala, India</span>
+                    <span>Did nothing</span>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="download" class="section" style="min-height: 70vh;">
+        <div class="container fade-up download-wrapper">
+            <h2 style="font-size: clamp(2rem, 4vw, 4rem); color: var(--text-muted); margin-bottom: 1rem;">Initialize the sequence.</h2>
+            <a href="#" class="massive-btn">Download v1.0</a>
+            <p class="lead" style="margin: 2rem auto 0 auto; text-transform: uppercase; font-size: 0.9rem; letter-spacing: 2px;">Available for MacOS & Windows Core</p>
+        </div>
+    </section>
+
+    <footer>
+        <div>© 2026 Mascot OS.</div>
+        <div>Designed in the void.</div>
+    </footer>
+
+    <script>
+        // Custom Cursor
+        const cursorDot = document.querySelector('.cursor-dot');
+        const cursorOutline = document.querySelector('.cursor-outline');
+        window.addEventListener('mousemove', (e) => {
+            const posX = e.clientX; const posY = e.clientY;
+            cursorDot.style.left = `${posX}px`; cursorDot.style.top = `${posY}px`;
+            cursorOutline.animate({ left: `${posX}px`, top: `${posY}px` }, { duration: 500, fill: "forwards" });
+        });
+
+        // Expand cursor on clickables
+        document.querySelectorAll('a, .team-row').forEach(el => {
+            el.addEventListener('mouseenter', () => {
+                cursorOutline.style.width = '60px'; cursorOutline.style.height = '60px';
+                cursorOutline.style.backgroundColor = 'rgba(255,255,255,0.1)';
+            });
+            el.addEventListener('mouseleave', () => {
+                cursorOutline.style.width = '40px'; cursorOutline.style.height = '40px';
+                cursorOutline.style.backgroundColor = 'transparent';
+            });
+        });
+
+        // Mascot Eye Tracking
+        document.addEventListener('mousemove', (e) => {
+            document.querySelectorAll('.eye').forEach(eye => {
+                const rect = eye.getBoundingClientRect();
+                const angle = Math.atan2(e.clientY - (rect.top + rect.height/2), e.clientX - (rect.left + rect.width/2));
+                const pupil = eye.querySelector('.pupil');
+                pupil.style.transform = `translate(calc(-50% + ${Math.cos(angle)*4}px), calc(-50% + ${Math.sin(angle)*4}px))`;
+            });
+        });
+
+        // Team Hover Image Effect
+        const hoverImg = document.querySelector('.team-hover-img');
+        document.querySelectorAll('.team-row').forEach(row => {
+            row.addEventListener('mouseenter', () => {
+                hoverImg.style.backgroundImage = `url(${row.getAttribute('data-img')})`;
+                hoverImg.classList.add('visible');
+            });
+            row.addEventListener('mouseleave', () => hoverImg.classList.remove('visible'));
+            row.addEventListener('mousemove', (e) => {
+                hoverImg.style.left = `${e.clientX}px`; hoverImg.style.top = `${e.clientY}px`;
+            });
+        });
+
+        // Scroll Animations
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => { if (entry.isIntersecting) entry.target.classList.add('visible'); });
+        }, { threshold: 0.1, rootMargin: "0px 0px -50px 0px" });
+        document.querySelectorAll('.fade-up').forEach(el => observer.observe(el));
+    </script>
+</body>
+</html>

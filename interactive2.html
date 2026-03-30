@@ -1,0 +1,360 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI Mascot | Desktop Companion</title>
+    <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@300;400;600;800&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg-color: #0a0a0a;
+            --text-main: #f4f4f5;
+            --text-muted: #a1a1aa;
+            --border-color: #27272a;
+            --accent: #e4e4e7;
+            --mascot-color: #ffffff;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Manrope', sans-serif;
+            background-color: var(--bg-color);
+            color: var(--text-main);
+            line-height: 1.5;
+            overflow-x: hidden;
+            -webkit-font-smoothing: antialiased;
+        }
+
+        /* --- Navigation --- */
+        nav {
+            position: fixed;
+            top: 0;
+            width: 100%;
+            padding: 1.5rem 4rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            z-index: 100;
+            background: rgba(10, 10, 10, 0.8);
+            backdrop-filter: blur(10px);
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        .logo {
+            font-size: 1.2rem;
+            font-weight: 800;
+            letter-spacing: -0.5px;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 2rem;
+        }
+
+        .nav-links a {
+            color: var(--text-muted);
+            text-decoration: none;
+            font-size: 0.9rem;
+            font-weight: 600;
+            transition: color 0.3s ease;
+        }
+
+        .nav-links a:hover {
+            color: var(--text-main);
+        }
+
+        /* --- Global Layout --- */
+        .section {
+            padding: 8rem 4rem;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            width: 100%;
+        }
+
+        /* --- Typography --- */
+        h1 {
+            font-size: clamp(4rem, 8vw, 8rem);
+            font-weight: 800;
+            line-height: 1;
+            letter-spacing: -0.03em;
+            margin-bottom: 2rem;
+            max-width: 800px;
+        }
+
+        h2 {
+            font-size: clamp(2.5rem, 5vw, 4rem);
+            font-weight: 600;
+            letter-spacing: -0.02em;
+            margin-bottom: 3rem;
+        }
+
+        p.lead {
+            font-size: 1.5rem;
+            color: var(--text-muted);
+            max-width: 600px;
+            margin-bottom: 3rem;
+            font-weight: 300;
+        }
+
+        /* --- Buttons --- */
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            background: var(--text-main);
+            color: var(--bg-color);
+            padding: 1rem 2.5rem;
+            border-radius: 100px;
+            font-weight: 600;
+            text-decoration: none;
+            font-size: 1.1rem;
+            transition: transform 0.3s ease, background 0.3s ease;
+        }
+
+        .btn:hover {
+            transform: scale(1.05);
+            background: #d4d4d8;
+        }
+
+        /* --- Features Grid --- */
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+            border-top: 1px solid var(--border-color);
+            padding-top: 4rem;
+        }
+
+        .card {
+            padding: 2rem;
+            border: 1px solid var(--border-color);
+            border-radius: 16px;
+            background: rgba(255, 255, 255, 0.02);
+            transition: background 0.3s ease;
+        }
+
+        .card:hover {
+            background: rgba(255, 255, 255, 0.05);
+        }
+
+        .card h3 {
+            font-size: 1.5rem;
+            margin-bottom: 1rem;
+        }
+
+        .card p {
+            color: var(--text-muted);
+            font-size: 1rem;
+        }
+
+        /* --- Interactive Sticky Mascot --- */
+        .mascot-container {
+            position: fixed;
+            bottom: 40px;
+            right: 40px;
+            width: 100px;
+            height: 100px;
+            z-index: 999;
+            pointer-events: none; /* So it doesn't block clicks */
+        }
+
+        .mascot {
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(135deg, #3f3f46, #18181b);
+            border: 2px solid #52525b;
+            border-radius: 40% 60% 70% 30% / 40% 50% 60% 50%;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.5);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 12px;
+            animation: morph 8s ease-in-out infinite, float 4s ease-in-out infinite;
+            transition: transform 0.2s ease-out;
+        }
+
+        @keyframes morph {
+            0% { border-radius: 40% 60% 70% 30% / 40% 50% 60% 50%; }
+            34% { border-radius: 70% 30% 50% 50% / 30% 30% 70% 70%; }
+            67% { border-radius: 100% 60% 60% 100% / 100% 100% 60% 60%; }
+            100% { border-radius: 40% 60% 70% 30% / 40% 50% 60% 50%; }
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-15px); }
+        }
+
+        .eye {
+            width: 22px;
+            height: 22px;
+            background: #fff;
+            border-radius: 50%;
+            position: relative;
+        }
+
+        .pupil {
+            width: 8px;
+            height: 8px;
+            background: #000;
+            border-radius: 50%;
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            transition: 0.1s;
+        }
+
+        /* --- Scroll Reveal Animations --- */
+        .reveal {
+            opacity: 0;
+            transform: translateY(40px);
+            transition: all 1s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+
+        .reveal.active {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        /* --- Footer --- */
+        footer {
+            padding: 4rem;
+            border-top: 1px solid var(--border-color);
+            display: flex;
+            justify-content: space-between;
+            color: var(--text-muted);
+            font-size: 0.9rem;
+        }
+    </style>
+</head>
+<body>
+
+    <nav>
+        <div class="logo">MASCOT.AI</div>
+        <div class="nav-links">
+            <a href="#features">Features</a>
+            <a href="#design">Design</a>
+            <a href="#download">Download</a>
+        </div>
+    </nav>
+
+    <div class="mascot-container">
+        <div class="mascot">
+            <div class="eye"><div class="pupil"></div></div>
+            <div class="eye"><div class="pupil"></div></div>
+        </div>
+    </div>
+
+    <section class="section">
+        <div class="container reveal">
+            <h1>Structure.<br>Emotion.<br>Companion.</h1>
+            <p class="lead">An AI desktop mascot designed with clarity and purpose. It lives on your screen, responds to your workflow, and stays out of your way.</p>
+            <a href="#download" class="btn">Get Early Access</a>
+        </div>
+    </section>
+
+    <section id="features" class="section">
+        <div class="container">
+            <h2 class="reveal">Built around <br>system logic.</h2>
+            <div class="grid">
+                <div class="card reveal">
+                    <h3>Context Aware</h3>
+                    <p>It observes your active windows. Coding? It stays quiet. Browsing? It interacts. We removed the noise so it only engages when it makes sense.</p>
+                </div>
+                <div class="card reveal" style="transition-delay: 0.1s;">
+                    <h3>Unobtrusive UI</h3>
+                    <p>No clunky chatboxes. Just smooth, fluid animations that blend into your operating system seamlessly.</p>
+                </div>
+                <div class="card reveal" style="transition-delay: 0.2s;">
+                    <h3>Smart AI Core</h3>
+                    <p>Powered by local LLMs, it understands commands, sets reminders, and answers quick questions without leaving your desktop.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="design" class="section" style="background: #111111;">
+        <div class="container reveal">
+            <p style="font-size: 1.2rem; text-transform: uppercase; letter-spacing: 2px; color: var(--text-muted); margin-bottom: 2rem;">Our Philosophy</p>
+            <h2 style="font-size: clamp(3rem, 6vw, 5rem); max-width: 1000px; line-height: 1.1;">
+                We approach software by removing complexity. Form emerges from clarity.
+            </h2>
+        </div>
+    </section>
+
+    <section id="download" class="section" style="min-height: 50vh;">
+        <div class="container reveal" style="text-align: center;">
+            <h2>Ready to install?</h2>
+            <p class="lead" style="margin: 0 auto 3rem auto;">Available for MacOS and Windows.</p>
+            <a href="#" class="btn" style="padding: 1.5rem 4rem; font-size: 1.3rem;">Download v1.0</a>
+        </div>
+    </section>
+
+    <footer>
+        <div>© 2026 Mascot AI. All rights reserved.</div>
+        <div>Designed with intention.</div>
+    </footer>
+
+    <script>
+        // 1. Mascot Eye Tracking (Follows Cursor everywhere on the page)
+        document.addEventListener('mousemove', (e) => {
+            const mouseX = e.clientX;
+            const mouseY = e.clientY;
+
+            const eyes = document.querySelectorAll('.eye');
+            
+            eyes.forEach(eye => {
+                const rect = eye.getBoundingClientRect();
+                const eyeCenterX = rect.left + rect.width / 2;
+                const eyeCenterY = rect.top + rect.height / 2;
+
+                const deltaX = mouseX - eyeCenterX;
+                const deltaY = mouseY - eyeCenterY;
+                
+                const angle = Math.atan2(deltaY, deltaX);
+                
+                const maxDistance = 6; 
+                const pupilX = Math.cos(angle) * maxDistance;
+                const pupilY = Math.sin(angle) * maxDistance;
+
+                const pupil = eye.querySelector('.pupil');
+                pupil.style.transform = `translate(calc(-50% + ${pupilX}px), calc(-50% + ${pupilY}px))`;
+            });
+        });
+
+        // 2. Scroll Reveal Animation using Intersection Observer
+        const revealElements = document.querySelectorAll('.reveal');
+
+        const revealOptions = {
+            threshold: 0.15, // Triggers when 15% of the element is visible
+            rootMargin: "0px 0px -50px 0px"
+        };
+
+        const revealOnScroll = new IntersectionObserver(function(entries, observer) {
+            entries.forEach(entry => {
+                if (!entry.isIntersecting) return;
+                
+                entry.target.classList.add('active');
+                observer.unobserve(entry.target); // Stop observing once revealed
+            });
+        }, revealOptions);
+
+        revealElements.forEach(el => {
+            revealOnScroll.observe(el);
+        });
+    </script>
+</body>
+</html>

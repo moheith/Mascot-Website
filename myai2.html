@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Download Center</title>
+
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: 'Poppins', sans-serif;
+    }
+
+    body {
+      height: 100vh;
+      background: linear-gradient(135deg, #667eea, #764ba2);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+
+    .card {
+      background: rgba(255, 255, 255, 0.1);
+      backdrop-filter: blur(15px);
+      border-radius: 20px;
+      padding: 40px;
+      text-align: center;
+      color: white;
+      width: 320px;
+      box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+    }
+
+    .card h1 {
+      font-size: 26px;
+      margin-bottom: 10px;
+    }
+
+    .card p {
+      font-size: 14px;
+      opacity: 0.8;
+      margin-bottom: 25px;
+    }
+
+    .file-box {
+      background: rgba(255,255,255,0.15);
+      padding: 15px;
+      border-radius: 12px;
+      margin-bottom: 25px;
+    }
+
+    .file-name {
+      font-size: 16px;
+      font-weight: bold;
+    }
+
+    .file-size {
+      font-size: 13px;
+      opacity: 0.7;
+    }
+
+    .btn {
+      display: inline-block;
+      padding: 12px 25px;
+      border-radius: 30px;
+      background: #00ffcc;
+      color: black;
+      text-decoration: none;
+      font-weight: bold;
+      transition: 0.3s;
+    }
+
+    .btn:hover {
+      background: #00ccaa;
+      transform: scale(1.05);
+    }
+
+    footer {
+      margin-top: 20px;
+      font-size: 12px;
+      opacity: 0.6;
+    }
+  </style>
+</head>
+
+<body>
+
+  <div class="card">
+    <h1>Download Files</h1>
+    <p>Click below to download the complete folder</p>
+
+    <div class="file-box">
+      <div class="file-name">📁 desktopai.zip</div>
+      <div class="file-size">Size: 1 GB</div>
+    </div>
+
+    <a href="desktopai.zip" download class="btn">⬇ Download Now</a>
+
+    <footer>© 2026 Your Website</footer>
+  </div>
+
+</body>
+</html>
