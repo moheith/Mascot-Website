@@ -1,0 +1,4 @@
+node_modules
+dist
+mic/**/models/
+mic/**/*.bin
