@@ -1,3 +1,10 @@
+<<<<<<< HEAD
 desktop-ai-companion-main
 desktopai.zip
 
+=======
+node_modules
+dist
+mic/**/models/
+mic/**/*.bin
+>>>>>>> 1764f259d90af59ed185cdd798cff6c8a31db628
